@@ -52,7 +52,7 @@ NB_MODULE(_ext, m) {
           keep the logit value; otherwise set to -inf
 
           Args:
-              bitmask (array): Array of int32 where each bit corresponds to a token
+              bitmask (array): Array of uint32 where each bit corresponds to a token
               logits (array): Array of float16 or float32 containing vocabulary logits
               stream (Stream, optional): Stream on which to schedule the operation
 

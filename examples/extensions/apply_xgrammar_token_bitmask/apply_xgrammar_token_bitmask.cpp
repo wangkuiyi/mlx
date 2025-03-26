@@ -24,9 +24,9 @@ mx::array apply_xgrammar_token_bitmask(
     const mx::array& bitmask,
     const mx::array& logits,
     mx::StreamOrDevice s) {
-  // Ensure bitmask is int32
-  if (bitmask.dtype() != mx::int32) {
-    throw std::runtime_error("Bitmask must be int32");
+  // Ensure bitmask is uint32
+  if (bitmask.dtype() != mx::uint32) {
+    throw std::runtime_error("Bitmask must be uint32");
   }
 
   // Ensure logits is float16 or float32
@@ -72,15 +72,15 @@ void apply_xgrammar_token_bitmask_cpu_impl(
   encoder.set_output_array(out);
 
   // Launch the CPU kernel
-  encoder.dispatch([bitmask_ptr = bitmask.data<int32_t>(),
+  encoder.dispatch([bitmask_ptr = bitmask.data<uint32_t>(),
                     logits_ptr = logits.data<T>(),
                     out_ptr = out.data<T>(),
                     size = out.size()]() {
     // For each element
     for (size_t i = 0; i < size; i++) {
-      // Get the int32 containing the bit we want to check
-      int32_t mask_word = bitmask_ptr[i / 32];
-      // Get the bit position within that int32
+      // Get the uint32 containing the bit we want to check
+      uint32_t mask_word = bitmask_ptr[i / 32];
+      // Get the bit position within that uint32
       int32_t bit_pos = i % 32;
       // Check if the bit is set
       bool bit_set = (mask_word >> bit_pos) & 1;

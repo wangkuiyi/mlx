@@ -8,13 +8,13 @@ using namespace metal;
 
 template <typename T>
 [[kernel]] void apply_xgrammar_token_bitmask_float32(
-    device const int32_t* bitmask [[buffer(0)]],
+    device const uint32_t* bitmask [[buffer(0)]],
     device const float* logits [[buffer(1)]],
     device float* out [[buffer(2)]],
     uint index [[thread_position_in_grid]]) {
-  // Get the int32 containing the bit we want to check
-  int32_t mask_word = bitmask[index / 32];
-  // Get the bit position within that int32
+  // Get the uint32 containing the bit we want to check
+  uint32_t mask_word = bitmask[index / 32];
+  // Get the bit position within that uint32
   int32_t bit_pos = index % 32;
   // Check if the bit is set
   bool bit_set = (mask_word >> bit_pos) & 1;
@@ -26,13 +26,13 @@ template <typename T>
 
 template <typename T>
 [[kernel]] void apply_xgrammar_token_bitmask_float16(
-    device const int32_t* bitmask [[buffer(0)]],
+    device const uint32_t* bitmask [[buffer(0)]],
     device const half* logits [[buffer(1)]],
     device half* out [[buffer(2)]],
     uint index [[thread_position_in_grid]]) {
-  // Get the int32 containing the bit we want to check
-  int32_t mask_word = bitmask[index / 32];
-  // Get the bit position within that int32
+  // Get the uint32 containing the bit we want to check
+  uint32_t mask_word = bitmask[index / 32];
+  // Get the bit position within that uint32
   int32_t bit_pos = index % 32;
   // Check if the bit is set
   bool bit_set = (mask_word >> bit_pos) & 1;
