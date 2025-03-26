@@ -32,7 +32,12 @@ find_package(MLX CONFIG REQUIRED)
 add_library(mlx_ext)
 
 # Add sources
-target_sources(mlx_ext PUBLIC ${CMAKE_CURRENT_LIST_DIR}/axpby/axpby.cpp)
+target_sources(
+  mlx_ext
+  PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/axpby/axpby.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/apply_xgrammar_token_bitmask/apply_xgrammar_token_bitmask.cpp
+)
 
 # Add include headers
 target_include_directories(mlx_ext PUBLIC ${CMAKE_CURRENT_LIST_DIR})
@@ -51,6 +56,7 @@ if(MLX_BUILD_METAL)
     mlx_ext
     SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/axpby/axpby.metal
+    ${CMAKE_CURRENT_LIST_DIR}/apply_xgrammar_token_bitmask/apply_xgrammar_token_bitmask.metal
     INCLUDE_DIRS
     ${PROJECT_SOURCE_DIR}
     ${MLX_INCLUDE_DIRS}
@@ -58,7 +64,6 @@ if(MLX_BUILD_METAL)
     ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
   add_dependencies(mlx_ext mlx_ext_metallib)
-
 endif()
 
 # ----------------------------- Python Bindings -----------------------------
