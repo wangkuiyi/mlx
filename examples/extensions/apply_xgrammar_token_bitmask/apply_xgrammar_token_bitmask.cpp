@@ -34,9 +34,15 @@ mx::array apply_xgrammar_token_bitmask(
     throw std::runtime_error("Logits must be float16 or float32");
   }
 
-  // Ensure shapes match
-  if (bitmask.shape() != logits.shape()) {
-    throw std::runtime_error("Bitmask and logits must have the same shape");
+  // Ensure the bitmask has enough bits to cover the logits
+  size_t bits_needed = logits.size();
+  size_t int32s_needed = (bits_needed + 31) / 32; // Ceiling division by 32
+  if (bitmask.size() < int32s_needed) {
+    std::ostringstream error_msg;
+    error_msg << "Bitmask has insufficient bits: got " << (bitmask.size() * 32)
+              << " bits (" << bitmask.size() << " int32s), but need "
+              << bits_needed << " bits (" << int32s_needed << " int32s)";
+    throw std::runtime_error(error_msg.str());
   }
 
   // Construct the array as the output of the primitive

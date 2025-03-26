@@ -1,5 +1,7 @@
 // Copyright © 2024 Apple Inc.
 
+#include <metal_stdlib>
+
 #include "mlx/backend/metal/kernels/utils.h"
 
 using namespace metal;
